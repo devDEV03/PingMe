@@ -14,7 +14,7 @@ class PingMeClass : ViewModel() {
     val uistate : StateFlow<PingDataState> = _uistate.asStateFlow()
 
     fun selectCard(
-        item : PingData
+        item : PingData?
     ){
         _uistate.update {
             currentState -> currentState.copy(
