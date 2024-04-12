@@ -2,6 +2,7 @@ package com.example.pingme
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,8 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
@@ -34,51 +39,30 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.pingme.ModelView.PingMeClass
 import com.example.pingme.data.PingData
 import com.example.pingme.data.PingDataState
+import com.example.pingme.data.RailIcons
+import com.example.pingme.data.Screens
+import com.example.pingme.data.iconList
 
 
-enum class Screens{
-    Start,
-    Mid,
-    End
-}
-
-data class RailIcons(
-    val title : String,
-    val selectedIcon : ImageVector,
-    val unselectedIcon : ImageVector,
-    val navRoute : Screens,
-    val bagde : Int? = null,
-    val route : Screens
-)
 @Composable
 fun PingMeNormal(
-    pingUiState : PingDataState,
+    pingUiState : PingMeClass,
     itemList : List<PingData>,
     modifier : Modifier,
     navCon : NavHostController = rememberNavController()
 ){
 
-   NavHost(navController = navCon, startDestination = Screens.Start.name){
-       composable(Screens.Start.name){
-
-       }
-       composable(Screens.Mid.name){
-
-       }
-       composable(Screens.End.name){
-
-       }
-   }
     Row {
         AnimatedVisibility(visible = true) {
-
+            NavigationRailType(railItems = iconList, navCon = navCon)
         }
 
         LazyColumn{
             items(itemList){
-                it ->   CardTemplate(modifier = modifier, item = it)
+                it ->   CardTemplate(modifier = modifier, item = it, onClickCard = {pingUiState.selectCard(it) })
             }
         }
 
@@ -90,8 +74,13 @@ fun PingMeNormal(
 private fun CardTemplate(
     modifier : Modifier,
     item : PingData,
+    onClickCard : (PingData) -> Unit
 ){
-    Card {
+    Card (
+        modifier = Modifier.clickable {
+            onClickCard(item)
+        }
+    ){
         Column {
             Row {
                 Box{

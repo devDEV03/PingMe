@@ -38,7 +38,7 @@ fun PingMe(
 
     if(contentType == windowType.LIST_ONLY){
         PingMeNormal(
-            pingUiState = uistate,
+            pingUiState = pingMVVM,
             itemList = itemList,
             modifier = modifier
         )
