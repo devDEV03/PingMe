@@ -39,9 +39,11 @@ fun PingMe(
     if(contentType == windowType.LIST_ONLY){
         PingMeNormal(
             pingUiState = pingMVVM,
-            itemList = itemList,
             modifier = modifier
         )
+    }
+    else{
+        PingMeExpanded(pingUiState = pingMVVM, modifier = Modifier)
     }
 
 }

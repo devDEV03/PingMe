@@ -14,6 +14,7 @@ data class PingData(
     @StringRes val heading : Int = 0,
     @StringRes val description : Int = 0,
     @StringRes val time : Int = 0,
+    @StringRes val message : Int = 0
 )
 
 enum class Screens{

@@ -31,6 +31,7 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,16 +55,18 @@ import com.example.pingme.data.PingDataState
 import com.example.pingme.data.RailIcons
 import com.example.pingme.data.Screens
 import com.example.pingme.data.iconList
+import com.example.pingme.data.itemList
+import com.example.pingme.ui.theme.PingDisplay
+import com.example.pingme.ui.theme.PingExpandedDisplay
 
 
 @Composable
-fun PingMeNormal(
+fun PingMeExpanded(
     pingUiState : PingMeClass,
-    itemList : List<PingData>,
     modifier : Modifier,
     navCon : NavHostController = rememberNavController()
 ){
-
+    val pingState by pingUiState.uistate.collectAsState()
     Row {
         AnimatedVisibility(visible = true) {
             NavigationRailType(railItems = iconList, navCon = navCon)
@@ -71,11 +74,43 @@ fun PingMeNormal(
 
         LazyColumn{
             items(itemList){
-                it ->   CardTemplate(modifier = modifier, item = it, onClickCard = {pingUiState.selectCard(it) })
+                    it ->   CardTemplate(modifier = modifier, item = it, onClickCard = {pingUiState.selectCard(it)
+                })
             }
         }
-
+        PingExpandedDisplay(viewModelPing = pingState)
     }
+
+}
+@Composable
+fun PingMeNormal(
+    pingUiState : PingMeClass,
+    modifier : Modifier,
+    navCon : NavHostController = rememberNavController()
+){
+    val pingState by pingUiState.uistate.collectAsState()
+
+    NavHost(navController = navCon, startDestination = Screens.Start.name){
+        composable(route = Screens.Start.name){
+            Row {
+                AnimatedVisibility(visible = true) {
+                    NavigationRailType(railItems = iconList, navCon = navCon)
+                }
+
+                LazyColumn{
+                    items(itemList){
+                            it ->   CardTemplate(modifier = modifier, item = it, onClickCard = {pingUiState.selectCard(it)
+                            navCon.navigate(Screens.Mid.name)})
+                    }
+                }
+
+            }
+        }
+        composable(route = Screens.Mid.name){
+        PingDisplay(viewModelPing = pingState,navCon)
+        }
+    }
+
 
 }
 
