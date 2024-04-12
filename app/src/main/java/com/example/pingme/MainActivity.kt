@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val size = calculateWindowSizeClass(this)
-                    Greeting("Android")
+                    PingMe(windowSize = size.widthSizeClass,)
                 }
             }
         }

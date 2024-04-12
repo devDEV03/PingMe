@@ -7,8 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pingme.ModelView.PingMeClass
+import com.example.pingme.data.itemList
 
 enum class windowType{
     LIST_ONLY,LIST_AND_DETAILS
@@ -17,7 +19,8 @@ enum class windowType{
 @Composable
 fun PingMe(
     windowSize : WindowWidthSizeClass,
-    pingMVVM : PingMeClass = viewModel()
+    pingMVVM : PingMeClass = viewModel(),
+    modifier : Modifier = Modifier
 ){
 
     val uistate by pingMVVM.uistate.collectAsState()
@@ -34,7 +37,11 @@ fun PingMe(
     }
 
     if(contentType == windowType.LIST_ONLY){
-
+        PingMeNormal(
+            pingUiState = uistate,
+            itemList = itemList,
+            modifier = modifier
+        )
     }
 
 }
